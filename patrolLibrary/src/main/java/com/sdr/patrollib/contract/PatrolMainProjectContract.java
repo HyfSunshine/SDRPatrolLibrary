@@ -2,8 +2,8 @@ package com.sdr.patrollib.contract;
 
 import com.sdr.lib.mvp.AbstractPresenter;
 import com.sdr.lib.mvp.AbstractView;
-import com.sdr.patrollib.data.main.PatrolProject;
-import com.sdr.patrollib.data.main.PatrolProjectItem;
+import com.sdr.patrollib.data.project.PatrolProject;
+import com.sdr.patrollib.data.project.PatrolProjectItem;
 
 import java.util.List;
 

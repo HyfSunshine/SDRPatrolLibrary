@@ -34,4 +34,5 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.github.HyfSunshine:SDRLibrary:1.0.1-beta'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
+    implementation 'com.github.HyfSunshine:SDRQRcodeLibrary:1.0'
 }

@@ -12,7 +12,7 @@ import okhttp3.OkHttpClient;
  */
 
 public class PatrolHttp {
-    public static PatrolApi patrolApi;
+    private static PatrolApi patrolApi;
 
     public static final PatrolApi getService() {
         if (patrolApi == null) {

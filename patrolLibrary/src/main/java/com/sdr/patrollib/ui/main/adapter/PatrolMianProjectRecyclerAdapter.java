@@ -5,7 +5,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.sdr.patrollib.R;
-import com.sdr.patrollib.data.main.PatrolProjectItem;
+import com.sdr.patrollib.data.project.PatrolProjectItem;
 
 /**
  * Created by HyFun on 2018/12/06.

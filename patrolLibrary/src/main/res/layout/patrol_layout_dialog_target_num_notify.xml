@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:overScrollMode="never"
+    android:scrollbars="none">
+
+    <com.sdr.lib.widget.RoundFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:radius="15dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/patrol_dialog_target_num_tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textColor="#333333"
+                    android:textSize="20sp"
+                    tools:text="华家排灌站" />
+
+                <com.sdr.lib.widget.SquareFramLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@mipmap/patrol_dialog_progress_image">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/patrol_dialog_target_num_tv_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            tools:text="标准化巡查" />
+
+                        <TextView
+                            android:id="@+id/patrol_dialog_target_num_tv_target_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textColor="#333"
+                            android:textSize="18sp"
+                            tools:text="检查指标20项" />
+                    </LinearLayout>
+                </com.sdr.lib.widget.SquareFramLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="注：巡查未提交记录只保存至24:00，请及时提交" />
+
+                <Button
+                    android:id="@+id/patrol_dialog_target_num_btn_confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="开始" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/patrol_dialog_target_num_iv_close"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="right"
+                android:background="?selectableItemBackground"
+                android:padding="5dp"
+                android:src="@drawable/patrol_ic_close_black_24dp"
+                android:tint="@color/colorPrimary" />
+        </FrameLayout>
+    </com.sdr.lib.widget.RoundFrameLayout>
+</ScrollView>

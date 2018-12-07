@@ -2,6 +2,8 @@ package com.sdr.patrollib.util;
 
 import android.graphics.Color;
 
+import java.util.UUID;
+
 /**
  * Created by HyFun on 2018/12/06.
  * Email: 775183940@qq.com
@@ -23,6 +25,17 @@ public class PatrolUtil {
         int green = (color & 0x00ff00) >> 8;
         int blue = (color & 0x0000ff);
         return Color.argb(153, red, green, blue);
+    }
+
+
+    /**
+     * 获取大写的uuid
+     *
+     * @return
+     */
+    public static final String uuid() {
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+        return uuid;
     }
 
 }

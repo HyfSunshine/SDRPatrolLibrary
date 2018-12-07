@@ -1,8 +1,9 @@
 package com.sdr.patrollib.http;
 
 import com.sdr.patrollib.data.BaseData;
-import com.sdr.patrollib.data.main.PatrolProject;
-import com.sdr.patrollib.data.main.PatrolProjectItem;
+import com.sdr.patrollib.data.device.PatrolDevice;
+import com.sdr.patrollib.data.project.PatrolProject;
+import com.sdr.patrollib.data.project.PatrolProjectItem;
 
 import java.util.List;
 
@@ -22,6 +23,11 @@ public interface PatrolApi {
     @GET("app/app_patrol_mobile_check")
     Observable<BaseData<List<PatrolProjectItem>>> getProjectList(@Query("userId") String userId);
 
+    // 获取工程巡检详情
     @GET("app/app_patrol_mobile_check/{projectId}")
     Observable<BaseData<PatrolProject>> getProjectDetail(@Path("projectId") int projectId, @Query("userId") String userId);
+
+    // 获取设备巡检的详情
+    @GET("app/app_patrol_facility_check")
+    Observable<BaseData<PatrolDevice>> getDeviceInfo(@Query("userId") String userId, @Query("markCode") String code);
 }

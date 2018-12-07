@@ -6,5 +6,7 @@
         <activity
             android:name=".ui.main.PatrolMainActivity"
             android:launchMode="singleTask" />
+        <activity android:name=".ui.target.PatrolTargetDeviceActivity"/>
     </application>
+
 </manifest>
