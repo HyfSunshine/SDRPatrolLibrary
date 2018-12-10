@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#09bb07</color>
+
+    <color name="patrol_content_normal_bg">#C6EAC6</color>
+    <color name="patrol_content_normal_text">#09bb07</color>
+    <color name="patrol_content_danger_bg">#F3D2D1</color>
+    <color name="patrol_content_danger_text">#e64340</color>
 </resources>

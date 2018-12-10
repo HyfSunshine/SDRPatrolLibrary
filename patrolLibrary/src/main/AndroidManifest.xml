@@ -6,7 +6,9 @@
         <activity
             android:name=".ui.main.PatrolMainActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".ui.target.PatrolTargetDeviceActivity"/>
+        <activity android:name=".ui.target_device.PatrolTargetDeviceActivity" />
+        <activity android:name=".ui.target_device.PatrolMeterReadingActivity" />
+        <activity android:name=".ui.target_device.PatrolDeviceAddDangerActivity"></activity>
     </application>
 
 </manifest>

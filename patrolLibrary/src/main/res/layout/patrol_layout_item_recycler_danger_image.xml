@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sdr.lib.widget.SquareFramLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
+
+    <ImageView
+        android:id="@+id/patrol_add_danger_image_recycler_item_iv_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:foreground="#33333333"
+        android:scaleType="centerCrop"
+        tools:src="@mipmap/patrol_main_header_image" />
+
+    <ImageView
+        android:id="@+id/patrol_add_danger_image_recycler_item_iv_delete"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="right"
+        android:background="#FC8379"
+        android:src="@drawable/patrol_ic_close_black_24dp"
+        android:tint="#ffffff" />
+
+    <ImageView
+        android:id="@+id/patrol_add_danger_image_recycler_item_iv_play_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:src="@drawable/patrol_ic_play_circle_outline_black_24dp" />
+
+    <TextView
+        android:id="@+id/patrol_add_danger_image_recycler_item_tv_file_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#60333333"
+        android:gravity="center"
+        android:padding="3dp"
+        android:text="12.6MB"
+        android:textColor="#fff" />
+</com.sdr.lib.widget.SquareFramLayout>

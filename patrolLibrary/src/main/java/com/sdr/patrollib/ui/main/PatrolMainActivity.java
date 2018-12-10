@@ -25,7 +25,7 @@ import com.sdr.patrollib.data.device.PatrolDeviceRecord;
 import com.sdr.patrollib.presenter.PatrolMainPresenter;
 import com.sdr.patrollib.support.PatrolNumNotifyDialog;
 import com.sdr.patrollib.support.data.AttachmentLocal;
-import com.sdr.patrollib.ui.target.PatrolTargetDeviceActivity;
+import com.sdr.patrollib.ui.target_device.PatrolTargetDeviceActivity;
 import com.sdr.patrollib.util.PatrolRecordUtil;
 import com.sdr.patrollib.util.PatrolUtil;
 import com.sdr.qrcodelib.QRScanActivity;

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0"
+    android:overScrollMode="never">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!--内容描述-->
+        <TextView
+            android:id="@+id/patrol_meter_read_tv_check_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="18sp"
+            tools:text="克克吐鲁克，平均海拔4700米以上，是名副其实的“生命禁区”，新疆军区某边防团克克吐鲁克边防连常年驻守于此。他们日复一日走过漫漫巡逻路，在我们看不到的地方默默守卫祖国。他们说，想多为祖国守几次边防。" />
+
+        <!--单选-->
+        <RadioGroup
+            android:id="@+id/patrol_meter_read_rg_sigle_choice_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="125458782" />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="125458782" />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="125458782" />
+        </RadioGroup>
+        <!--多选-->
+        <LinearLayout
+            android:id="@+id/patrol_meter_read_ll_multi_choice_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="123456789" />
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="123456789" />
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="123456789" />
+        </LinearLayout>
+
+        <!--数字-->
+        <LinearLayout
+            android:id="@+id/patrol_meter_read_ll_num_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/patrol_meter_read_tv_num_min"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="——" />
+
+                <TextView
+                    android:id="@+id/patrol_meter_read_tv_num_max"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="10" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/patrol_meter_read_edt_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="请输入数值"
+                android:inputType="numberDecimal"
+                android:padding="10dp"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <!--内容-->
+        <EditText
+            android:id="@+id/patrol_meter_read_edt_content"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="#ffffff"
+            android:gravity="left|top"
+            android:hint="请输入内容"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/patrol_meter_read_btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="5dp"
+            android:text="保存" />
+    </LinearLayout>
+</ScrollView>
