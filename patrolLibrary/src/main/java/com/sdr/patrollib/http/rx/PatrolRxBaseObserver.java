@@ -5,6 +5,7 @@ import com.sdr.lib.http.HttpClient;
 import com.sdr.lib.mvp.AbstractView;
 import com.sdr.lib.rx.CommonException;
 import com.sdr.lib.rx.HandleException;
+import com.sdr.patrollib.http.PatrolServerException;
 
 import io.reactivex.observers.ResourceObserver;
 
@@ -24,9 +25,21 @@ public abstract class PatrolRxBaseObserver<T> extends ResourceObserver<T> {
     @Override
     public void onError(Throwable e) {
         PatrolRxUtils.handleException(new HandleException(e) {
+
+            @Override
+            public boolean parseException(Throwable throwable) {
+                if (throwable instanceof PatrolServerException) {
+                    PatrolServerException exception = (PatrolServerException) throwable;
+                    view.showErrorToast(exception.getMessage());
+                    return true;
+                }
+
+                return super.parseException(throwable);
+            }
+
             @Override
             public void commonException(CommonException e) {
-                view.showErrorToast(e.getMessage());
+                view.showErrorToast(e.message);
             }
         });
         Logger.t(HttpClient.TAG).e(e, e.getMessage());
