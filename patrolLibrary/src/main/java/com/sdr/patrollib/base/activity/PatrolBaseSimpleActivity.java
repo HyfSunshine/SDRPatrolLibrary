@@ -49,7 +49,7 @@ public class PatrolBaseSimpleActivity extends BaseActivity implements AbstractVi
                     .content(msg)
                     .build();
         }
-        progressDialog.show();
+        progressDialog.setContent(msg);
     }
 
     @Override

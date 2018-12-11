@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/patrol_add_danger_content_recycler_item_tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            tools:text="Smiles are like band-aids. They cover up the pain but it still hurts.~~~微笑就像创可贴。虽然掩饰住了伤口，但是心痛依然。" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/patrol_add_danger_content_recycler_item_rv_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never" />
+
+        <TextView
+            android:id="@+id/patrol_add_danger_content_recycler_item_tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+            tools:text="2018-07-20 07:10:11" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/patrol_add_danger_content_recycler_item_iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:background="#FC8379"
+        android:src="@drawable/patrol_ic_close_black_24dp"
+        android:tint="#ffffff" />
+</LinearLayout>

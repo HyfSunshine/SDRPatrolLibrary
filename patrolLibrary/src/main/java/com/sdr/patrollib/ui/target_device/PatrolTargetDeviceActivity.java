@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,11 +22,15 @@ import com.sdr.patrollib.data.device.PatrolDevice;
 import com.sdr.patrollib.data.device.PatrolDeviceContentType;
 import com.sdr.patrollib.data.device.PatrolDeviceRecord;
 import com.sdr.patrollib.presenter.PatrolTargetDevicePresenter;
+import com.sdr.patrollib.support.data.AttachmentLocal;
 import com.sdr.patrollib.support.data.PatrolTargetView;
 import com.sdr.patrollib.ui.target_device.adapter.PatrolTargetDeviceDangerRecyclerAdapter;
 import com.sdr.patrollib.ui.target_device.adapter.PatrolTargetDeviceTargetRecyclerAdapter;
 import com.sdr.patrollib.util.PatrolRecordUtil;
+import com.sdr.patrollib.util.PatrolUtil;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,6 +62,7 @@ public class PatrolTargetDeviceActivity extends PatrolBaseActivity<PatrolTargetD
         initIntent();
         initView();
         initData();
+        initListener();
     }
 
     @Override
@@ -87,6 +93,81 @@ public class PatrolTargetDeviceActivity extends PatrolBaseActivity<PatrolTargetD
         recyclerViewTarget.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerViewTarget.setAdapter(targetRecyclerAdapter);
     }
+
+    private void initListener() {
+        buttonSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 检查抄表项是否全部检查完了
+                int unfinishnum = getUnfinishMeterReadNum(patrolDeviceRecord);
+                if (unfinishnum > 0) {
+                    // 说明未完成
+                    showErrorMsg("您还有" + unfinishnum + "个抄表项未检查");
+                    return;
+                }
+
+                new MaterialDialog.Builder(getContext())
+                        .title("提交")
+                        .content("是否上传本次巡查记录？")
+                        .negativeText("取消")
+                        .positiveText("确定")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                // 设置问题数量
+                                patrolDeviceRecord.setErrorCount(PatrolUtil.getPatrolDeviceDangerCount(patrolDeviceRecord));
+
+                                // 先上传附件 再上传json
+                                List<AttachmentLocal> needUploadFileList = new ArrayList<>();
+                                List<AttachmentLocal> notExitsFileList = new ArrayList<>();
+                                long attatchSize = 0;
+                                // 初始化 文件是否存在
+                                List<PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents> contentList = patrolDeviceRecord.getContents();
+                                for (int i = 0; i < contentList.size(); i++) {
+                                    PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents content = contentList.get(i);
+                                    List<AttachmentLocal> attachmentLocalList = content.getAttachmentLocalList();
+                                    for (int j = 0; j < attachmentLocalList.size(); j++) {
+                                        AttachmentLocal attachment = attachmentLocalList.get(j);
+                                        File file = new File(attachment.getFilePath());
+                                        // 如果文件不存在  将文件设置成不存在的状态
+                                        if (!file.exists()) {
+                                            attachment.setStatus(AttachmentLocal.NO_FILE);
+                                            notExitsFileList.add(attachment);
+                                        } else {
+                                            needUploadFileList.add(attachment);
+                                            attatchSize += attachment.getFileSize();
+                                        }
+                                    }
+                                }
+
+                                if (needUploadFileList.isEmpty()) {
+                                    presenter.postDeviceRecord(patrolDeviceRecord);
+                                } else {
+                                    StringBuilder sb = new StringBuilder();
+                                    sb.append("记录中的附件共" + (needUploadFileList.size() + notExitsFileList.size()) + "个\n");
+                                    sb.append("需要上传" + needUploadFileList.size() + "个\n");
+                                    sb.append("不存在的附件" + notExitsFileList.size() + "个\n");
+                                    sb.append("预计消耗流量" + PatrolUtil.formatFileSize(attatchSize));
+                                    new MaterialDialog.Builder(getContext())
+                                            .title("上传附件")
+                                            .content(sb.toString())
+                                            .negativeText("取消")
+                                            .positiveText("上传")
+                                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                    presenter.postAttatchment(needUploadFileList, patrolDeviceRecord);
+                                                }
+                                            })
+                                            .show();
+                                }
+                            }
+                        })
+                        .show();
+            }
+        });
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -119,7 +200,23 @@ public class PatrolTargetDeviceActivity extends PatrolBaseActivity<PatrolTargetD
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_OPEN_METER_READING && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_OPEN_ADD_DANGER && resultCode == RESULT_OK) {
+            PatrolDevice.PatrolFacilityCheckItemsVo.Patrol_FacilityCheckItemContents content = (PatrolDevice.PatrolFacilityCheckItemsVo.Patrol_FacilityCheckItemContents) data.getSerializableExtra(PatrolDeviceAddDangerActivity.CONTENT);
+            List<PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents> dangerList = (List<PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents>) data.getSerializableExtra(PatrolDeviceAddDangerActivity.DANGER_LIST);
+            Iterator<PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents> iterator = patrolDeviceRecord.getContents().iterator();
+            while (iterator.hasNext()) {
+                PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents next = iterator.next();
+                if (next.getCheckContentId().equals(content.getId() + "")) {
+                    iterator.remove();
+                }
+            }
+            patrolDeviceRecord.getContents().addAll(dangerList);
+            // 保存至本地
+            PatrolRecordUtil.saveDeviceRecord(patrolDeviceRecord);
+            // 更新adapter
+            targetRecyclerAdapter.notifyDataSetChanged();
+            dangerRecyclerAdapter.notifyDataSetChanged();
+        } else if (requestCode == REQUEST_CODE_OPEN_METER_READING && resultCode == RESULT_OK) {
             PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents dangerRecord = (PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents) data.getSerializableExtra(PatrolMeterReadingActivity.DANGER);
             Iterator<PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents> iterator = patrolDeviceRecord.getContents().iterator();
             while (iterator.hasNext()) {
@@ -158,7 +255,7 @@ public class PatrolTargetDeviceActivity extends PatrolBaseActivity<PatrolTargetD
             PatrolDevice.PatrolFacilityCheckItemsVo.Patrol_FacilityCheckItemContents content = (PatrolDevice.PatrolFacilityCheckItemsVo.Patrol_FacilityCheckItemContents) adapter.getData().get(position);
             // 判断检查项类别  打开不同的activity
             if (content.getCheckType().equals(PatrolDeviceContentType.检查项.toString())) {
-                //PatrolDeviceAddDangerActivity.start(getActivity(), REQUEST_CODE_OPEN_ADD_DANGER, currentTarget, content, patrolDeviceRecord);
+                PatrolDeviceAddDangerActivity.start(getActivity(), REQUEST_CODE_OPEN_ADD_DANGER, currentTarget, content, patrolDeviceRecord);
             } else if (content.getCheckType().equals(PatrolDeviceContentType.抄表项.toString())) {
                 PatrolMeterReadingActivity.start(getActivity(), REQUEST_CODE_OPEN_METER_READING, content, patrolDeviceRecord);
             } else {
@@ -169,6 +266,24 @@ public class PatrolTargetDeviceActivity extends PatrolBaseActivity<PatrolTargetD
 
 
     // ——————————————————————PRIVATE——————————————————————————
+
+    /**
+     * 获取未完成抄表项的数量
+     *
+     * @param record
+     * @return
+     */
+    private int getUnfinishMeterReadNum(PatrolDeviceRecord record) {
+        int num = 0;
+        List<PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents> contentList = record.getContents();
+        for (int i = 0; i < contentList.size(); i++) {
+            PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents content = contentList.get(i);
+            if (content.getCheckType().equals(PatrolDeviceContentType.抄表项.toString()) && TextUtils.isEmpty(content.getMeterContent())) {
+                num++;
+            }
+        }
+        return num;
+    }
 
     /**
      * 开启进入activity
@@ -215,5 +330,36 @@ public class PatrolTargetDeviceActivity extends PatrolBaseActivity<PatrolTargetD
 
     // ———————————————————————VIEW———————————————————————
 
+    @Override
+    public void showUploadAttatchFaileDialog(List<AttachmentLocal> attachmentLocals) {
+        new MaterialDialog.Builder(getContext())
+                .title("附件上传未完成")
+                .content("还有" + attachmentLocals.size() + "个附件上传失败，是否继续上传？")
+                .cancelable(false)
+                .negativeText("跳过")
+                .positiveText("继续")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        presenter.postDeviceRecord(patrolDeviceRecord);
+                    }
+                })
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        presenter.postAttatchment(attachmentLocals, patrolDeviceRecord);
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void uploadDeviceRecordSuccess() {
+        // 上传成功
+        showSuccessToast("上传巡查记录成功");
+        // 删除本地缓存
+        PatrolRecordUtil.removeDeviceRecord();
+        finish();
+    }
 
 }

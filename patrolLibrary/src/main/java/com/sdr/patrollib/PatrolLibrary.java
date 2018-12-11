@@ -88,4 +88,14 @@ public class PatrolLibrary {
     public void setPatrolUser(PatrolUser patrolUser) {
         this.patrolUser = patrolUser;
     }
+
+    private PatrolConfig patrolConfig = new PatrolConfig();
+
+    public PatrolConfig getPatrolConfig() {
+        return patrolConfig;
+    }
+
+    public void setPatrolConfig(PatrolConfig patrolConfig) {
+        this.patrolConfig = patrolConfig;
+    }
 }

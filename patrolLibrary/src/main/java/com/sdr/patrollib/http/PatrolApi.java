@@ -8,7 +8,11 @@ import com.sdr.patrollib.data.project.PatrolProjectItem;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -30,4 +34,13 @@ public interface PatrolApi {
     // 获取设备巡检的详情
     @GET("app/app_patrol_facility_check")
     Observable<BaseData<PatrolDevice>> getDeviceInfo(@Query("userId") String userId, @Query("markCode") String code);
+
+    // 设备巡检附件上传
+    @POST("app/app_patrol_facility_check_records/app_upload")
+    Observable<ResponseBody> postFile(@Body RequestBody Body);
+
+    // 设备巡检记录上传
+    @POST("app/app_patrol_facility_check_records")
+    Observable<ResponseBody> postDeviceRecordJson(@Body RequestBody requestBody);
+
 }
