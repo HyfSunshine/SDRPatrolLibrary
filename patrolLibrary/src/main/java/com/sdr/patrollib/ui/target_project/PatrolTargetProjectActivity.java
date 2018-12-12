@@ -235,7 +235,7 @@ public class PatrolTargetProjectActivity extends PatrolBaseActivity<PatrolTarget
             PatrolRecordUtil.saveProjectRecord(patrolProjectRecord);
             //  更新adapter
             patrolTargetProjectDangerRecyclerAdapter.notifyDataSetChanged();
-            patrolTargetProjectDangerRecyclerAdapter.notifyDataSetChanged();
+            patrolTargetProjectTargetRecyclerAdapter.notifyDataSetChanged();
         }
     }
 
