@@ -71,8 +71,8 @@ public class PatrolRecordUtil {
      *
      * @param patrolMobileRecord
      */
-    public static final void saveMobileRecord(PatrolProjectRecord patrolMobileRecord) {
-        saveMobileRecord(null, patrolMobileRecord);
+    public static final void saveProjectRecord(PatrolProjectRecord patrolMobileRecord) {
+        saveProjectRecord(null, patrolMobileRecord);
     }
 
     /**
@@ -81,7 +81,7 @@ public class PatrolRecordUtil {
      * @param patrolMobile
      * @param patrolMobileRecord
      */
-    public static final void saveMobileRecord(PatrolProject patrolMobile, PatrolProjectRecord patrolMobileRecord) {
+    public static final void saveProjectRecord(PatrolProject patrolMobile, PatrolProjectRecord patrolMobileRecord) {
         if (patrolMobile != null)
             PatrolACache.getACache().put(PatrolConstant.PATROL_PROJECT, patrolMobile);
 
@@ -91,7 +91,7 @@ public class PatrolRecordUtil {
     /**
      * 移除移动巡检数据  和  移动巡检记录数据
      */
-    public static final void removeMobileRecord() {
+    public static final void removeProjectRecord() {
         PatrolACache.getACache().remove(PatrolConstant.PATROL_PROJECT);
         PatrolACache.getACache().remove(PatrolConstant.PATROL_PROJECT_RECORD);
     }
@@ -101,7 +101,7 @@ public class PatrolRecordUtil {
      *
      * @return
      */
-    public static final PatrolProject getMobile() {
+    public static final PatrolProject getProject() {
         PatrolProject patrolMobile = (PatrolProject) PatrolACache.getACache().getAsObject(PatrolConstant.PATROL_PROJECT);
         return patrolMobile;
     }

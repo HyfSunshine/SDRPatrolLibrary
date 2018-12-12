@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/patrol_menu_id_mobile_target_map_view"
+        android:icon="@drawable/patrol_ic_mobile_map_view_24dp"
+        android:title="巡查路线"
+        app:showAsAction="always" />
+</menu>

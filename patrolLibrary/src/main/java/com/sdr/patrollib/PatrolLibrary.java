@@ -44,6 +44,7 @@ public class PatrolLibrary {
 
 
     private Application application;
+    private boolean debug;
     private String url;
     private int toolbarRes;
     private Drawable headerBarDrawable;
@@ -56,8 +57,9 @@ public class PatrolLibrary {
      * @param toolbarRes
      * @param headerBarDrawable
      */
-    public void init(Application application, String url, int toolbarRes, Drawable headerBarDrawable) {
+    public void init(Application application,boolean debug, String url, int toolbarRes, Drawable headerBarDrawable) {
         this.application = application;
+        this.debug = debug;
         this.url = url;
         this.toolbarRes = toolbarRes;
         this.headerBarDrawable = headerBarDrawable;
@@ -65,6 +67,10 @@ public class PatrolLibrary {
 
     public Application getApplication() {
         return application;
+    }
+
+    public boolean isDebug() {
+        return debug;
     }
 
     public String getUrl() {

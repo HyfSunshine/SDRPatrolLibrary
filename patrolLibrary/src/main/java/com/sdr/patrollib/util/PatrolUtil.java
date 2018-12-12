@@ -1,11 +1,22 @@
 package com.sdr.patrollib.util;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.PolylineOptions;
+import com.sdr.lib.util.ToastUtil;
 import com.sdr.patrollib.data.device.PatrolDeviceRecord;
+import com.sdr.patrollib.data.project.PatrolProjectRecord;
 
 import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -100,6 +111,24 @@ public class PatrolUtil {
         }
     }
 
+    /**
+     * 检查gps定位是否开启
+     *
+     * @param activity
+     * @return
+     */
+    public static final boolean checkOpenGPS(Activity activity) {
+        LocationManager locationManager = (LocationManager) activity.getSystemService(Activity.LOCATION_SERVICE);
+        boolean ok = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (!ok) {
+            ToastUtil.showErrorMsg("请打开您的gps定位");
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            activity.startActivity(intent);
+        }
+        return ok;
+    }
+
 
     /**
      * 获取设备巡检记录的缺陷总数
@@ -119,4 +148,89 @@ public class PatrolUtil {
         }
         return count;
     }
+
+    /**
+     * 获取工程巡检隐患数量
+     *
+     * @param record
+     * @return
+     */
+    public static final int getPatrolMobileDangerCount(PatrolProjectRecord record) {
+        int num = 0;
+        List<PatrolProjectRecord.Patrol_MobileCheckRecordItemContents> dangerList = record.getItems();
+        for (int i = 0; i < dangerList.size(); i++) {
+            PatrolProjectRecord.Patrol_MobileCheckRecordItemContents patrol_mobileCheckRecordItemContents = dangerList.get(i);
+            if (patrol_mobileCheckRecordItemContents.getHasError() == 1) {
+                num++;
+            }
+        }
+        return num;
+    }
+
+
+
+    /**
+     * 坐标集合转换 string
+     *
+     * @param list
+     * @return x1 y1,x2 y2,x3 y3,x4 y4........
+     */
+    public static final String latlngListToString(List<LatLng> list) {
+        if (list == null || list.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder("");
+        for (int i = 0; i < list.size(); i++) {
+            LatLng latLng = list.get(i);
+            sb.append(latLng.latitude + "");
+            sb.append(" ");
+            sb.append(latLng.longitude);
+            if (i != list.size() - 1) {
+                sb.append(",");
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 字符串转换为 坐标集合
+     *
+     * @param coors x1 y1,x2 y2,x3 y3,x4 y4........
+     * @return
+     */
+    public static final LinkedList<LatLng> strToLatlngList(String coors) {
+        LinkedList<LatLng> list = new LinkedList<>();
+        if (TextUtils.isEmpty(coors)) return list;
+        String[] strings = coors.split(",");
+        for (int i = 0; i < strings.length; i++) {
+            String[] lat = strings[i].split(" ");
+            LatLng latLng = new LatLng(Double.parseDouble(lat[0]), Double.parseDouble(lat[1]));
+            list.add(latLng);
+        }
+        return list;
+    }
+
+
+    /**
+     * 画线
+     *
+     * @param context
+     * @param latLngList
+     * @return
+     */
+    public static final PolylineOptions createMapLine(Context context, List<LatLng> latLngList) {
+//        PathSmoothTool mpathSmoothTool = new PathSmoothTool();
+//        //设置平滑处理的等级
+//        mpathSmoothTool.setIntensity(4);
+//        List<LatLng> pathoptimizeList = mpathSmoothTool.pathOptimize(latLngList);
+        PolylineOptions options = new PolylineOptions();
+        options
+                .addAll(latLngList)
+                .width(10)
+                .setUseTexture(true)
+                .setDottedLine(false)
+                .geodesic(true)
+                .zIndex(0)
+                .color(Color.parseColor("#FFF2AF06"));
+        return options;
+    }
+
 }

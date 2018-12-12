@@ -13,11 +13,11 @@ import com.sdr.patrol.R;
  */
 
 public class BaseConfig {
-    public static final int onHeaderBarRes() {
+    public static int onHeaderBarRes() {
         return R.layout.layout_public_toolbar_white;
     }
 
-    public static final Drawable onHeaderBarDrawable(Context context) {
+    public static Drawable onHeaderBarDrawable(Context context) {
         return new ColorDrawable(context.getResources().getColor(R.color.colorPrimary));
     }
 }

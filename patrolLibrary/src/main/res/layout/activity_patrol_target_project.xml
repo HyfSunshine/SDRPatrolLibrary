@@ -9,15 +9,17 @@
 
     <include layout="@layout/patrol_layout_public_target_danger_view" />
 
+    <include layout="@layout/patrol_layout_public_target_map_view" />
+
     <Button
-        android:id="@+id/patrol_target_device_btn_submit"
+        android:id="@+id/patrol_target_project_btn_submit"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="20dp"
         android:background="@drawable/sdr_shape_circle"
         android:backgroundTint="@color/colorPrimary"
-        app:backgroundTint="@color/colorPrimary"
         android:text="结束"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        app:backgroundTint="@color/colorPrimary" />
 </FrameLayout>

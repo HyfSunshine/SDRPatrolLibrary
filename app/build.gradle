@@ -9,6 +9,18 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
+        ndk {
+            //APP的build.gradle设置支持的SO库架构
+            //abiFilters 'armeabi', 'armeabi-v7a', 'x86'
+            abiFilters 'armeabi'
+        }
+
+        manifestPlaceholders = [
+                GD_MAP_KEY   : "aef7f6fa27be6b1d4dc242d9cab39e5d", // 公司
+        ]
+
     }
     buildTypes {
         release {
@@ -31,6 +43,7 @@ dependencies {
     // base
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.android.support:multidex:1.0.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.github.HyfSunshine:SDRLibrary:1.0.1-beta'

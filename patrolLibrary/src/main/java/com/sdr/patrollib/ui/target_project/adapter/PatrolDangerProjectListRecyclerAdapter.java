@@ -1,4 +1,4 @@
-package com.sdr.patrollib.ui.target_device.adapter;
+package com.sdr.patrollib.ui.target_project.adapter;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -15,7 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.sdr.patrollib.R;
 import com.sdr.patrollib.base.adapter.PatrolDangerImageListRecyclerAdapter;
-import com.sdr.patrollib.data.device.PatrolDeviceRecord;
+import com.sdr.patrollib.data.project.PatrolProjectRecord;
 import com.sdr.patrollib.support.PatrolDangerUpdateListener;
 import com.sdr.patrollib.support.data.AttachmentLocal;
 
@@ -23,22 +23,21 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Created by HyFun on 2018/12/11.
+ * Created by HyFun on 2018/12/12.
  * Email: 775183940@qq.com
  * Description:
  */
 
-public class PatrolDangerDeviceListRecyclerAdapter extends BaseQuickAdapter<PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents, BaseViewHolder> {
-
+public class PatrolDangerProjectListRecyclerAdapter extends BaseQuickAdapter<PatrolProjectRecord.Patrol_MobileCheckRecordItemContents, BaseViewHolder> {
     private PatrolDangerUpdateListener updateListener;
 
-    public PatrolDangerDeviceListRecyclerAdapter(int layoutResId, @Nullable List<PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents> data, PatrolDangerUpdateListener updateListener) {
+    public PatrolDangerProjectListRecyclerAdapter(int layoutResId, @Nullable List<PatrolProjectRecord.Patrol_MobileCheckRecordItemContents> data, PatrolDangerUpdateListener updateListener) {
         super(layoutResId, data);
         this.updateListener = updateListener;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, PatrolDeviceRecord.Patrol_FacilityCheckRecordItemContents item) {
+    protected void convert(BaseViewHolder helper, PatrolProjectRecord.Patrol_MobileCheckRecordItemContents item) {
         final int position = helper.getLayoutPosition();
 
         TextView tvContent = helper.getView(R.id.patrol_add_danger_content_recycler_item_tv_content);
@@ -46,20 +45,20 @@ public class PatrolDangerDeviceListRecyclerAdapter extends BaseQuickAdapter<Patr
 //        TextView tvTime = helper.getView(R.id.patrol_add_danger_content_recycler_item_tv_time);
         ImageView ivDelete = helper.getView(R.id.patrol_add_danger_content_recycler_item_iv_delete);
 
-        tvContent.setVisibility(TextUtils.isEmpty(item.getContentDesc()) ? View.GONE : View.VISIBLE);
-        tvContent.setText(item.getContentDesc());
+        tvContent.setVisibility(TextUtils.isEmpty(item.getDangerDesc()) ? View.GONE : View.VISIBLE);
+        tvContent.setText(item.getDangerDesc());
 
         PatrolDangerImageListRecyclerAdapter patrolDangerImageListRecyclerAdapter = PatrolDangerImageListRecyclerAdapter.setAdapter(rvImages, false);
         patrolDangerImageListRecyclerAdapter.setNewData(item.getAttachmentLocalList());
 
         ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 new MaterialDialog.Builder(mContext)
                         .title("提示")
-                        .content("确定删除此条隐患记录？")
+                        .content("是否删除此条隐患记录？")
                         .negativeText("取消")
-                        .positiveText("删除")
+                        .positiveText("确定")
                         .positiveColor(Color.RED)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
@@ -78,5 +77,6 @@ public class PatrolDangerDeviceListRecyclerAdapter extends BaseQuickAdapter<Patr
                         .show();
             }
         });
+
     }
 }

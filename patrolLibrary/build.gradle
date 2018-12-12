@@ -8,9 +8,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -30,12 +28,17 @@ dependencies {
 
     //noinspection GradleCompatible
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
+    // base
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.github.HyfSunshine:SDRLibrary:1.0.1-beta'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
 
     // must
-    compile 'com.github.HyfSunshine:SDRQRcodeLibrary:1.0'
-    compile 'com.github.HyfSunshine:TakePhotoVideoLib:0.0.7'
+    implementation 'com.github.HyfSunshine:SDRQRcodeLibrary:1.0'
+    implementation 'com.github.HyfSunshine:TakePhotoVideoLib:0.0.7'
+    // 高德地图
+    implementation 'com.amap.api:3dmap:latest.integration'
+    implementation 'com.amap.api:location:latest.integration'
 }
