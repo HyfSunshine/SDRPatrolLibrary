@@ -35,7 +35,7 @@ public interface PatrolApi {
     @GET("app/app_patrol_facility_check")
     Observable<BaseData<PatrolDevice>> getDeviceInfo(@Query("userId") String userId, @Query("markCode") String code);
 
-    // 设备巡检附件上传
+    // 巡检附件上传
     @POST("app/app_patrol_facility_check_records/app_upload")
     Observable<ResponseBody> postFile(@Body RequestBody Body);
 
@@ -43,4 +43,7 @@ public interface PatrolApi {
     @POST("app/app_patrol_facility_check_records")
     Observable<ResponseBody> postDeviceRecordJson(@Body RequestBody requestBody);
 
+    // 工程巡检记录上传
+    @POST("app/app_patrol_mobile_check_records")
+    Observable<ResponseBody> postProjectRecordJson(@Body RequestBody requestBody);
 }

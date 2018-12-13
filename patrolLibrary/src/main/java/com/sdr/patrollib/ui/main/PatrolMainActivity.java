@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sdr.patrollib.PatrolLibrary;
 import com.sdr.patrollib.R;
 import com.sdr.patrollib.base.activity.PatrolBaseActivity;
@@ -22,10 +23,15 @@ import com.sdr.patrollib.base.fragment.PatrolBaseSimpleFragment;
 import com.sdr.patrollib.contract.PatrolMainContract;
 import com.sdr.patrollib.data.device.PatrolDevice;
 import com.sdr.patrollib.data.device.PatrolDeviceRecord;
+import com.sdr.patrollib.data.project.PatrolProject;
+import com.sdr.patrollib.data.project.PatrolProjectRecord;
 import com.sdr.patrollib.presenter.PatrolMainPresenter;
 import com.sdr.patrollib.support.PatrolNumNotifyDialog;
+import com.sdr.patrollib.support.PatrolUnFinishDialog;
 import com.sdr.patrollib.support.data.AttachmentLocal;
+import com.sdr.patrollib.support.data.PatrolTaskLocal;
 import com.sdr.patrollib.ui.target_device.PatrolTargetDeviceActivity;
+import com.sdr.patrollib.ui.target_project.PatrolTargetProjectActivity;
 import com.sdr.patrollib.util.PatrolRecordUtil;
 import com.sdr.patrollib.util.PatrolUtil;
 import com.sdr.qrcodelib.QRScanActivity;
@@ -119,6 +125,29 @@ public class PatrolMainActivity extends PatrolBaseActivity<PatrolMainPresenter> 
             tabLayout.setupWithViewPager(viewPager);
 
         }
+
+        initUnFinishData();
+    }
+
+    private void initUnFinishData() {
+        List<PatrolTaskLocal> patrolTaskLocals = new ArrayList<>();
+        // 设备巡检
+        PatrolDevice device = PatrolRecordUtil.getDevice();
+        PatrolDeviceRecord deviceRecord = PatrolRecordUtil.getDeviceRecord();
+        if (device != null && deviceRecord != null && !PatrolUtil.isRecordTimeOut(deviceRecord.getPatrolTime())) {
+            patrolTaskLocals.add(new PatrolTaskLocal(PatrolTaskLocal.PATROL_TYPE_DEVICE, device, deviceRecord));
+        }
+        // 工程巡检
+        PatrolProject mobile = PatrolRecordUtil.getProject();
+        PatrolProjectRecord mobileRecord = PatrolRecordUtil.getProjectRecord();
+        if (mobile != null && mobileRecord != null && !PatrolUtil.isRecordTimeOut(mobileRecord.getPatrolStartTime())) {
+            patrolTaskLocals.add(new PatrolTaskLocal(PatrolTaskLocal.PATROL_TYPE_MOBILE, mobile, mobileRecord));
+        }
+
+        if (patrolTaskLocals.isEmpty()) return;
+        PatrolUnFinishDialog patrolUnFinishDialog = new PatrolUnFinishDialog(getContext(), patrolTaskLocals)
+                .setOnClickOptionListener(onClickUnfinishDialogOptionListener);
+        patrolUnFinishDialog.show();
     }
 
 
@@ -137,6 +166,35 @@ public class PatrolMainActivity extends PatrolBaseActivity<PatrolMainPresenter> 
             presenter.getDeviceInfoFromQRcode(string);
         }
     }
+
+    // —————————————————————————监听事件—————————————————————————————————
+    // 点击未完成任务dialog的   继续  放弃    按钮时的监听事件
+    private PatrolUnFinishDialog.OnClickOptionListener onClickUnfinishDialogOptionListener = new PatrolUnFinishDialog.OnClickOptionListener() {
+        @Override
+        public void onClickGoon(int position, int patrolType, PatrolTaskLocal patrolTaskLocal, BaseQuickAdapter adapter) {
+            if (patrolType == PatrolTaskLocal.PATROL_TYPE_DEVICE) {
+                // 跳转到巡查界面
+                PatrolDevice device = (PatrolDevice) patrolTaskLocal.getOrigin();
+                PatrolDeviceRecord record = (PatrolDeviceRecord) patrolTaskLocal.getRecord();
+                PatrolTargetDeviceActivity.start(getContext(), device, record);
+            } else if (patrolType == PatrolTaskLocal.PATROL_TYPE_MOBILE) {
+                PatrolProject mobile = (PatrolProject) patrolTaskLocal.getOrigin();
+                PatrolProjectRecord mobileRecord = (PatrolProjectRecord) patrolTaskLocal.getRecord();
+                PatrolTargetProjectActivity.start(getContext(), mobile, mobileRecord);
+            }
+        }
+
+        @Override
+        public void onClickDrop(int position, int patrolType, PatrolTaskLocal patrolTaskLocal, BaseQuickAdapter adapter) {
+            if (patrolType == PatrolTaskLocal.PATROL_TYPE_DEVICE) {
+                // 删除本地的数据
+                PatrolRecordUtil.removeDeviceRecord();
+            } else if (patrolType == PatrolTaskLocal.PATROL_TYPE_MOBILE) {
+                PatrolRecordUtil.removeProjectRecord();
+            }
+            adapter.remove(position);
+        }
+    };
 
     // —————————————————————VIEW———————————————————————
     @Override
@@ -196,7 +254,7 @@ public class PatrolMainActivity extends PatrolBaseActivity<PatrolMainPresenter> 
                         // 保存至本地
                         PatrolRecordUtil.saveDeviceRecord(patrolDevice, record);
                         // 跳转到巡查界面
-                        PatrolTargetDeviceActivity.start(getActivity(), 100, patrolDevice, record);
+                        PatrolTargetDeviceActivity.start(getActivity(), patrolDevice, record);
                         dialog.dismiss();
                     }
                 })

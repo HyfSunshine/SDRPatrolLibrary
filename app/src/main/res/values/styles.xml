@@ -5,7 +5,19 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+
+
+        <item name="buttonStyle">@style/ButtonStyle</item>
+        <!--配置全局的Material Dialog-->
+        <item name="md_title_color">#333333</item>
+        <item name="md_content_color">#333333</item>
+        <item name="md_positive_color">@color/colorPrimary</item>
+        <item name="md_negative_color">#7E7E7E</item>
     </style>
 
+    <!--button的样式-->
+    <style name="ButtonStyle" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/selector_button_bg</item>
+    </style>
 </resources>

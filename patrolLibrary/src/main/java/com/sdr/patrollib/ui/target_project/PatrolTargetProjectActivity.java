@@ -34,6 +34,7 @@ import com.sdr.patrollib.contract.PatrolTargetProjectContract;
 import com.sdr.patrollib.data.project.PatrolProject;
 import com.sdr.patrollib.data.project.PatrolProjectRecord;
 import com.sdr.patrollib.presenter.PatrolTargetProjectPresenter;
+import com.sdr.patrollib.support.data.AttachmentLocal;
 import com.sdr.patrollib.support.data.PatrolTargetView;
 import com.sdr.patrollib.support.location.PatrolMobileMapChangeListener;
 import com.sdr.patrollib.support.location.PatrolMobileMapHelperV2;
@@ -42,6 +43,9 @@ import com.sdr.patrollib.ui.target_project.adapter.PatrolTargetProjectTargetRecy
 import com.sdr.patrollib.util.PatrolRecordUtil;
 import com.sdr.patrollib.util.PatrolUtil;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -84,6 +88,7 @@ public class PatrolTargetProjectActivity extends PatrolBaseActivity<PatrolTarget
         initIntent();
         initView();
         initData();
+        initListener();
         mapView.onCreate(savedInstanceState);
     }
 
@@ -138,6 +143,75 @@ public class PatrolTargetProjectActivity extends PatrolBaseActivity<PatrolTarget
         patrolTargetProjectTargetRecyclerAdapter.setOnItemClickListener(targetItemClickListener);
         viewRecyclerTarget.setLayoutManager(new GridLayoutManager(getContext(), 2));
         viewRecyclerTarget.setAdapter(patrolTargetProjectTargetRecyclerAdapter);
+    }
+
+    private void initListener() {
+        buttonSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialDialog.Builder(getContext())
+                        .title("提交")
+                        .content("是否提交巡查记录？")
+                        .negativeText("取消")
+                        .positiveText("上传")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                // 提交巡查记录  结束时间  提交时间  隐患数量
+                                Date nowDate = new Date();
+                                patrolProjectRecord.setPatrolEndTime(nowDate.getTime());
+                                patrolProjectRecord.setPatrolSubmitTime(nowDate.getTime());
+                                patrolProjectRecord.setErrorCount(PatrolUtil.getPatrolMobileDangerCount(patrolProjectRecord));
+                                // 提交
+                                // 先上传附件 再上传json
+                                List<AttachmentLocal> needUploadFileList = new ArrayList<>();
+                                List<AttachmentLocal> notExitsFileList = new ArrayList<>();
+                                long attatchSize = 0;
+                                // 初始化 文件是否存在
+                                List<PatrolProjectRecord.Patrol_MobileCheckRecordItemContents> contentList = patrolProjectRecord.getItems();
+                                for (int i = 0; i < contentList.size(); i++) {
+                                    PatrolProjectRecord.Patrol_MobileCheckRecordItemContents content = contentList.get(i);
+                                    List<AttachmentLocal> attachmentLocalList = content.getAttachmentLocalList();
+                                    for (int j = 0; j < attachmentLocalList.size(); j++) {
+                                        AttachmentLocal attachment = attachmentLocalList.get(j);
+                                        File file = new File(attachment.getFilePath());
+                                        // 如果文件不存在  将文件设置成不存在的状态
+                                        if (!file.exists()) {
+                                            attachment.setStatus(AttachmentLocal.NO_FILE);
+                                            notExitsFileList.add(attachment);
+                                        } else if (attachment.getStatus() == AttachmentLocal.NOT_UPLOADED) {
+                                            needUploadFileList.add(attachment);
+                                            attatchSize += attachment.getFileSize();
+                                        }
+                                    }
+                                }
+
+                                if (needUploadFileList.isEmpty()) {
+                                    presenter.postProjectRecord(patrolProjectRecord);
+                                } else {
+                                    StringBuilder sb = new StringBuilder();
+                                    sb.append("记录中的附件共" + (needUploadFileList.size() + notExitsFileList.size()) + "个\n");
+                                    sb.append("需要上传" + needUploadFileList.size() + "个\n");
+                                    sb.append("不存在的附件" + notExitsFileList.size() + "个\n");
+                                    sb.append("预计消耗流量" + PatrolUtil.formatFileSize(attatchSize));
+                                    new MaterialDialog.Builder(getContext())
+                                            .title("上传附件")
+                                            .content(sb.toString())
+                                            .negativeText("取消")
+                                            .positiveText("上传")
+                                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                    presenter.postAttachment(needUploadFileList, patrolProjectRecord);
+                                                }
+                                            })
+                                            .show();
+                                }
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 
     @Override
@@ -361,5 +435,39 @@ public class PatrolTargetProjectActivity extends PatrolBaseActivity<PatrolTarget
         }
     }
 
+
     //——————————————————————————————VIEW——————————————————————————————————————————
+
+    @Override
+    public void showUploadAttachFaileDialog(List<AttachmentLocal> attachmentLocals) {
+        new MaterialDialog.Builder(getContext())
+                .title("附件上传未完成")
+                .content("还有" + attachmentLocals.size() + "个附件上传失败，是否继续上传？")
+                .cancelable(false)
+                .negativeText("跳过")
+                .positiveText("继续")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        presenter.postProjectRecord(patrolProjectRecord);
+                    }
+                })
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        presenter.postAttachment(attachmentLocals, patrolProjectRecord);
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void uploadProjectRecordSuccess() {
+        // 上传成功
+        showSuccessToast("上传工程记录成功");
+        // 删除本地缓存
+        PatrolRecordUtil.removeProjectRecord();
+        finish();
+    }
+
 }

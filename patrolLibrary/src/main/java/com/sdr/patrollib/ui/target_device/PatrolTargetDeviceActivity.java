@@ -1,6 +1,6 @@
 package com.sdr.patrollib.ui.target_device;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -133,7 +133,7 @@ public class PatrolTargetDeviceActivity extends PatrolBaseActivity<PatrolTargetD
                                         if (!file.exists()) {
                                             attachment.setStatus(AttachmentLocal.NO_FILE);
                                             notExitsFileList.add(attachment);
-                                        } else {
+                                        } else if (attachment.getStatus() == AttachmentLocal.NOT_UPLOADED) {
                                             needUploadFileList.add(attachment);
                                             attatchSize += attachment.getFileSize();
                                         }
@@ -286,18 +286,15 @@ public class PatrolTargetDeviceActivity extends PatrolBaseActivity<PatrolTargetD
     }
 
     /**
-     * 开启进入activity
-     *
-     * @param activity
-     * @param requestCode
+     * @param context
      * @param patrolDevice
      * @param patrolDeviceRecord
      */
-    public static final void start(Activity activity, int requestCode, PatrolDevice patrolDevice, PatrolDeviceRecord patrolDeviceRecord) {
-        Intent intent = new Intent(activity, PatrolTargetDeviceActivity.class);
+    public static final void start(Context context, PatrolDevice patrolDevice, PatrolDeviceRecord patrolDeviceRecord) {
+        Intent intent = new Intent(context, PatrolTargetDeviceActivity.class);
         intent.putExtra(PATROL_DEVICE, patrolDevice);
         intent.putExtra(PATROL_DEVICE_RECORD, patrolDeviceRecord);
-        activity.startActivityForResult(intent, requestCode);
+        context.startActivity(intent);
     }
 
     /**

@@ -16,6 +16,8 @@ import com.sdr.patrollib.data.device.PatrolDeviceRecord;
 import com.sdr.patrollib.data.project.PatrolProjectRecord;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -52,6 +54,24 @@ public class PatrolUtil {
     public static final String uuid() {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
         return uuid;
+    }
+
+    /**
+     * 判断本地存储的巡查记录是否超时
+     *
+     * @param time
+     * @return
+     */
+    public static final boolean isRecordTimeOut(long time) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date recordDate = new Date(time);
+        Date nowDate = new Date();
+        if (dateFormat.format(recordDate).equals(dateFormat.format(nowDate))) {
+            // 说明是同一天   没有超时
+            return false;
+        }
+        // 已超时
+        return true;
     }
 
 
