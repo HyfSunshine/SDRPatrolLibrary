@@ -283,6 +283,7 @@ public class PatrolTargetProjectActivity extends PatrolBaseActivity<PatrolTarget
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        patrolMobileMapHelper.setNeedBackLocation(true);
         if (requestCode == REQUEST_CODE_OPEN_ADD_DANGER && resultCode == RESULT_OK) {
             PatrolProject.PatrolMobileCheckItemsVo.Patrol_MobileCheckItems itemContent = (PatrolProject.PatrolMobileCheckItemsVo.Patrol_MobileCheckItems) data.getSerializableExtra(PatrolProjectAddDangerActivity.CONTENT);
             List<PatrolProjectRecord.Patrol_MobileCheckRecordItemContents> dangerList = (List<PatrolProjectRecord.Patrol_MobileCheckRecordItemContents>) data.getSerializableExtra(PatrolProjectAddDangerActivity.DANGER_LIST);
@@ -331,6 +332,7 @@ public class PatrolTargetProjectActivity extends PatrolBaseActivity<PatrolTarget
     private BaseQuickAdapter.OnItemClickListener dangerItemClickListener = new BaseQuickAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            patrolMobileMapHelper.setNeedBackLocation(false);
             PatrolProject.PatrolMobileCheckItemsVo.Patrol_MobileCheckItems content = patrolTargetProjectDangerRecyclerAdapter.getItem(position);
             PatrolProjectAddDangerActivity.start(getActivity(), REQUEST_CODE_OPEN_ADD_DANGER, currentTarget, content, patrolProjectRecord);
         }
@@ -467,6 +469,7 @@ public class PatrolTargetProjectActivity extends PatrolBaseActivity<PatrolTarget
         showSuccessToast("上传工程记录成功");
         // 删除本地缓存
         PatrolRecordUtil.removeProjectRecord();
+        patrolMobileMapHelper.setNeedBackLocation(false);
         finish();
     }
 
