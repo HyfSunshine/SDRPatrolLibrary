@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-
     <!-- 地图相关权限 -->
     <!-- 用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -34,13 +33,12 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
-
     <application>
 
         <!-- 公司KEY  高德地图 -->
         <meta-data
-        android:name="com.amap.api.v2.apikey"
-        android:value="${GD_MAP_KEY}" />
+            android:name="com.amap.api.v2.apikey"
+            android:value="${GD_MAP_KEY}" />
         <!-- 定位服务 -->
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService" />
@@ -51,8 +49,9 @@
         <activity android:name=".ui.target_device.PatrolTargetDeviceActivity" />
         <activity android:name=".ui.target_device.PatrolMeterReadingActivity" />
         <activity android:name=".ui.target_device.PatrolDeviceAddDangerActivity" />
-        <activity android:name=".ui.target_project.PatrolTargetProjectActivity"/>
-        <activity android:name=".ui.target_project.PatrolProjectAddDangerActivity"/>
+        <activity android:name=".ui.target_project.PatrolTargetProjectActivity" />
+        <activity android:name=".ui.target_project.PatrolProjectAddDangerActivity" />
+        <activity android:name=".ui.history.PatrolHistoryActivity"></activity>
     </application>
 
 </manifest>

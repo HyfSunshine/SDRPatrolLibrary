@@ -41,4 +41,6 @@ dependencies {
     // 高德地图
     implementation 'com.amap.api:3dmap:latest.integration'
     implementation 'com.amap.api:location:latest.integration'
+    // 日历
+    implementation 'com.haibin:calendarview:3.4.0'
 }

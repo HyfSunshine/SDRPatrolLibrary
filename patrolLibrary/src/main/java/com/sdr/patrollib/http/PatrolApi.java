@@ -2,8 +2,10 @@ package com.sdr.patrollib.http;
 
 import com.sdr.patrollib.data.BaseData;
 import com.sdr.patrollib.data.device.PatrolDevice;
+import com.sdr.patrollib.data.device_history.PatrolHistoryDevice;
 import com.sdr.patrollib.data.project.PatrolProject;
 import com.sdr.patrollib.data.project.PatrolProjectItem;
+import com.sdr.patrollib.data.project_history.PatrolHistoryProject;
 
 import java.util.List;
 
@@ -46,4 +48,12 @@ public interface PatrolApi {
     // 工程巡检记录上传
     @POST("app/app_patrol_mobile_check_records")
     Observable<ResponseBody> postProjectRecordJson(@Body RequestBody requestBody);
+
+    // 设备历史记录列表
+    @GET("app/app_patrol_facility_check_records")
+    Observable<BaseData<List<PatrolHistoryDevice>>> getHistoryDeviceList(@Query("startTime") long startTime, @Query("endTime") long endTime);
+
+    // 工程历史记录列表
+    @GET("app/app_patrol_mobile_check_records")
+    Observable<BaseData<List<PatrolHistoryProject>>> getHistoryProjectList(@Query("startTime") long startTime, @Query("endTime") long endTime);
 }

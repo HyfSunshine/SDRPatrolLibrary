@@ -16,11 +16,11 @@ import java.util.List;
  * Description:
  */
 
-public class BaseFragmentPagerAdapter<F extends PatrolBaseSimpleFragment> extends FragmentPagerAdapter {
+public class PatrolBaseFragmentPagerAdapter<F extends PatrolBaseSimpleFragment> extends FragmentPagerAdapter {
 
     private List<F> fragmentList;
 
-    public BaseFragmentPagerAdapter(FragmentManager fm, List<F> fragmentList) {
+    public PatrolBaseFragmentPagerAdapter(FragmentManager fm, List<F> fragmentList) {
         super(fm);
         this.fragmentList = fragmentList;
     }

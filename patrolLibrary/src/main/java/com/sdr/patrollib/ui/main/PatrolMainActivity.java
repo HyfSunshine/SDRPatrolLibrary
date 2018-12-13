@@ -18,7 +18,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sdr.patrollib.PatrolLibrary;
 import com.sdr.patrollib.R;
 import com.sdr.patrollib.base.activity.PatrolBaseActivity;
-import com.sdr.patrollib.base.adapter.BaseFragmentPagerAdapter;
+import com.sdr.patrollib.base.adapter.PatrolBaseFragmentPagerAdapter;
 import com.sdr.patrollib.base.fragment.PatrolBaseSimpleFragment;
 import com.sdr.patrollib.contract.PatrolMainContract;
 import com.sdr.patrollib.data.device.PatrolDevice;
@@ -30,6 +30,7 @@ import com.sdr.patrollib.support.PatrolNumNotifyDialog;
 import com.sdr.patrollib.support.PatrolUnFinishDialog;
 import com.sdr.patrollib.support.data.AttachmentLocal;
 import com.sdr.patrollib.support.data.PatrolTaskLocal;
+import com.sdr.patrollib.ui.history.PatrolHistoryActivity;
 import com.sdr.patrollib.ui.target_device.PatrolTargetDeviceActivity;
 import com.sdr.patrollib.ui.target_project.PatrolTargetProjectActivity;
 import com.sdr.patrollib.util.PatrolRecordUtil;
@@ -54,6 +55,10 @@ public class PatrolMainActivity extends PatrolBaseActivity<PatrolMainPresenter> 
     private TextView viewHeaderTvUserPhone;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    // 操作菜单
+    private View viewOperateDangerList;
+    private View viewOperateDangerQuery;
+    private View viewOperateHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,7 @@ public class PatrolMainActivity extends PatrolBaseActivity<PatrolMainPresenter> 
         setDisplayHomeAsUpEnabled();
         initView();
         initData();
+        initListener();
     }
 
     @Override
@@ -76,6 +82,11 @@ public class PatrolMainActivity extends PatrolBaseActivity<PatrolMainPresenter> 
         viewHeaderTvUserPhone = findViewById(R.id.patrol_main_header_tv_userphone);
         tabLayout = findViewById(R.id.patrol_main_tab);
         viewPager = findViewById(R.id.patrol_main_viewpager);
+
+        viewOperateDangerList = findViewById(R.id.patrol_main_ll_todo_task);
+        viewOperateDangerQuery = findViewById(R.id.patrol_main_ll_danger_query);
+        viewOperateHistory = findViewById(R.id.patrol_main_ll_inspect_history);
+
     }
 
     private void initData() {
@@ -120,34 +131,56 @@ public class PatrolMainActivity extends PatrolBaseActivity<PatrolMainPresenter> 
             List<PatrolBaseSimpleFragment> fragmentList = new ArrayList<>();
             fragmentList.add(new PatrolMainProjectFragment());
             fragmentList.add(new PatrolMainDeviceFragment());
-            BaseFragmentPagerAdapter baseFragmentPagerAdapter = new BaseFragmentPagerAdapter(getSupportFragmentManager(), fragmentList);
+            PatrolBaseFragmentPagerAdapter baseFragmentPagerAdapter = new PatrolBaseFragmentPagerAdapter(getSupportFragmentManager(), fragmentList);
             viewPager.setAdapter(baseFragmentPagerAdapter);
             tabLayout.setupWithViewPager(viewPager);
 
         }
 
-        initUnFinishData();
+        // 未完成任务
+        {
+            List<PatrolTaskLocal> patrolTaskLocals = new ArrayList<>();
+            // 设备巡检
+            PatrolDevice device = PatrolRecordUtil.getDevice();
+            PatrolDeviceRecord deviceRecord = PatrolRecordUtil.getDeviceRecord();
+            if (device != null && deviceRecord != null && !PatrolUtil.isRecordTimeOut(deviceRecord.getPatrolTime())) {
+                patrolTaskLocals.add(new PatrolTaskLocal(PatrolTaskLocal.PATROL_TYPE_DEVICE, device, deviceRecord));
+            }
+            // 工程巡检
+            PatrolProject mobile = PatrolRecordUtil.getProject();
+            PatrolProjectRecord mobileRecord = PatrolRecordUtil.getProjectRecord();
+            if (mobile != null && mobileRecord != null && !PatrolUtil.isRecordTimeOut(mobileRecord.getPatrolStartTime())) {
+                patrolTaskLocals.add(new PatrolTaskLocal(PatrolTaskLocal.PATROL_TYPE_MOBILE, mobile, mobileRecord));
+            }
+
+            if (patrolTaskLocals.isEmpty()) return;
+            PatrolUnFinishDialog patrolUnFinishDialog = new PatrolUnFinishDialog(getContext(), patrolTaskLocals)
+                    .setOnClickOptionListener(onClickUnfinishDialogOptionListener);
+            patrolUnFinishDialog.show();
+        }
     }
 
-    private void initUnFinishData() {
-        List<PatrolTaskLocal> patrolTaskLocals = new ArrayList<>();
-        // 设备巡检
-        PatrolDevice device = PatrolRecordUtil.getDevice();
-        PatrolDeviceRecord deviceRecord = PatrolRecordUtil.getDeviceRecord();
-        if (device != null && deviceRecord != null && !PatrolUtil.isRecordTimeOut(deviceRecord.getPatrolTime())) {
-            patrolTaskLocals.add(new PatrolTaskLocal(PatrolTaskLocal.PATROL_TYPE_DEVICE, device, deviceRecord));
-        }
-        // 工程巡检
-        PatrolProject mobile = PatrolRecordUtil.getProject();
-        PatrolProjectRecord mobileRecord = PatrolRecordUtil.getProjectRecord();
-        if (mobile != null && mobileRecord != null && !PatrolUtil.isRecordTimeOut(mobileRecord.getPatrolStartTime())) {
-            patrolTaskLocals.add(new PatrolTaskLocal(PatrolTaskLocal.PATROL_TYPE_MOBILE, mobile, mobileRecord));
-        }
 
-        if (patrolTaskLocals.isEmpty()) return;
-        PatrolUnFinishDialog patrolUnFinishDialog = new PatrolUnFinishDialog(getContext(), patrolTaskLocals)
-                .setOnClickOptionListener(onClickUnfinishDialogOptionListener);
-        patrolUnFinishDialog.show();
+    private void initListener() {
+        viewOperateDangerList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        viewOperateDangerQuery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        viewOperateHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), PatrolHistoryActivity.class));
+            }
+        });
+
     }
 
 
