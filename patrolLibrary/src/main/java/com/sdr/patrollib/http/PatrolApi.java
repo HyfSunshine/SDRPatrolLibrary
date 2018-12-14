@@ -3,8 +3,10 @@ package com.sdr.patrollib.http;
 import com.sdr.patrollib.data.BaseData;
 import com.sdr.patrollib.data.device.PatrolDevice;
 import com.sdr.patrollib.data.device_history.PatrolHistoryDevice;
+import com.sdr.patrollib.data.device_history.PatrolHistoryInfoDevice;
 import com.sdr.patrollib.data.project.PatrolProject;
 import com.sdr.patrollib.data.project.PatrolProjectItem;
+import com.sdr.patrollib.data.project_history.PatrolHistoryInfoProject;
 import com.sdr.patrollib.data.project_history.PatrolHistoryProject;
 
 import java.util.List;
@@ -53,7 +55,15 @@ public interface PatrolApi {
     @GET("app/app_patrol_facility_check_records")
     Observable<BaseData<List<PatrolHistoryDevice>>> getHistoryDeviceList(@Query("startTime") long startTime, @Query("endTime") long endTime);
 
+    // 设备历史记录详情
+    @GET("app/app_patrol_facility_check_records/{id}")
+    Observable<BaseData<PatrolHistoryInfoDevice>> getHistoryDeviceInfo(@Path("id") String id);
+
     // 工程历史记录列表
     @GET("app/app_patrol_mobile_check_records")
     Observable<BaseData<List<PatrolHistoryProject>>> getHistoryProjectList(@Query("startTime") long startTime, @Query("endTime") long endTime);
+
+    // 工程历史记录详情
+    @GET("app/app_patrol_mobile_check_records/{id}")
+    Observable<BaseData<PatrolHistoryInfoProject>> getHistoryProjectInfo(@Path("id") String id);
 }

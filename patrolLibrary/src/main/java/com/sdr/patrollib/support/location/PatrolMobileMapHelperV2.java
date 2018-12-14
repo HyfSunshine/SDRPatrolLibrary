@@ -328,19 +328,19 @@ public class PatrolMobileMapHelperV2 {
 
     private void play() {
         // debug播放国歌  release播放静音
-        mediaPlayer = MediaPlayer.create(context, PatrolLibrary.getInstance().isDebug() ? R.raw.guoge : R.raw.jingyin);
+        mediaPlayer = MediaPlayer.create(context, PatrolLibrary.getInstance().isDebug() ? R.raw.jingyin : R.raw.jingyin);
         try {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
                 mediaPlayer.release();
-                mediaPlayer = MediaPlayer.create(context, PatrolLibrary.getInstance().isDebug() ? R.raw.guoge : R.raw.jingyin);
+                mediaPlayer = MediaPlayer.create(context, PatrolLibrary.getInstance().isDebug() ? R.raw.jingyin : R.raw.jingyin);
             }
 
             mediaPlayer.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        mediaPlayer.start();
+        //mediaPlayer.start();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {//设置重复播放
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
@@ -381,7 +381,7 @@ public class PatrolMobileMapHelperV2 {
             builder = new Notification.Builder(context);
         }
         builder.setSmallIcon(R.drawable.patrol_ic_notification)
-                .setContentTitle("移动巡查定位")
+                .setContentTitle("工程巡查定位")
                 .setContentText("正在后台运行")
                 .setWhen(System.currentTimeMillis());
 

@@ -22,6 +22,7 @@ import com.sdr.patrollib.contract.PatrolHistoryProjectContract;
 import com.sdr.patrollib.data.project_history.PatrolHistoryProject;
 import com.sdr.patrollib.presenter.PatrolHistoryProjectPresenter;
 import com.sdr.patrollib.ui.history.adapter.PatrolHistoryProjectRecyclerAdapter;
+import com.sdr.patrollib.ui.history_info.PatrolHistoryInfoProjectActivity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -154,7 +155,7 @@ public class PatrolHistoryProjectFragment extends PatrolBaseFragment<PatrolHisto
     private BaseQuickAdapter.OnItemClickListener onItemClickListener = new BaseQuickAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+            PatrolHistoryInfoProjectActivity.start(getContext(), patrolHistoryProjectRecyclerAdapter.getItem(position).getId() + "");
         }
     };
 

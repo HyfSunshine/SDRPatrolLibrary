@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sdr.patrollib.widget.PatrolListenerScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/patrol_history_detail_device_scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/patrol_history_detail_mobile_top_iv_header_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foreground="#33333333"
+                android:minHeight="200dp"
+                android:scaleType="centerCrop"
+                tools:src="@mipmap/patrol_history_info_device_header" />
+
+            <FrameLayout
+                android:id="@+id/patrol_history_detail_mobile_top_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/patrol_history_detail_mobile_top_tv_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#ffffff"
+                            android:textSize="26sp"
+                            tools:text="滨江排灌站" />
+
+                        <TextView
+                            android:id="@+id/patrol_history_detail_mobile_top_tv_danger_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/patrol_shape_radius_5_outline_error_bg"
+                            android:paddingBottom="2dp"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:paddingTop="2dp"
+                            android:textColor="@color/patrol_color_error"
+                            android:visibility="gone"
+                            tools:text="隐患3" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/patrol_history_detail_mobile_top_tv_uploader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#fff"
+                        android:textSize="16sp"
+                        tools:text="巡查人：张三丰" />
+
+                    <TextView
+                        android:id="@+id/patrol_history_detail_mobile_top_tv_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#ffffff"
+                        tools:text="2018-08-06 13:06:12——2018-08-06 13:06:12" />
+                </LinearLayout>
+            </FrameLayout>
+        </FrameLayout>
+
+        <com.sdr.lib.widget.RoundFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="-10dp"
+            app:topLeftRadius="10dp"
+            app:topRightRadius="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/patrol_history_detail_device_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </com.sdr.lib.widget.RoundFrameLayout>
+    </LinearLayout>
+</com.sdr.patrollib.widget.PatrolListenerScrollView>
