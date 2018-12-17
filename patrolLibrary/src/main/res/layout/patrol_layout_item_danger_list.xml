@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="#ffffff"
+    app:cardCornerRadius="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="?selectableItemBackground"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/patrol_danger_list_recycler_item_tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/patrol_shape_right_radius_15_bg"
+                android:backgroundTint="@color/colorPrimary"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="工程检查"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:id="@+id/patrol_danger_list_recycler_item_tv_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="#FFF2AF06"
+                tools:text="未处理" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/patrol_danger_list_recycler_item_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            android:textColor="#333"
+            android:textSize="18sp"
+            tools:text="你玩「吃鸡类」游戏时，最穷的一次吃鸡，和最富的一次快递是怎样的？" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/patrol_danger_list_recycler_item_tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textSize="16sp"
+                tools:text="此时还剩下6个人，我，打死伏地魔的那个人，和另外不知道在哪的4个人。在缩下一圈的时候我超快的从那个被打死的伏地魔身上搜了点药和一把ump9外加一点子弹，他另外一把枪是98k，头甲和98k实在来不及捡放弃了。" />
+
+            <ImageView
+                android:id="@+id/patrol_danger_list_recycler_item_iv_danger"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="5dp"
+                android:scaleType="centerCrop"
+                tools:src="@mipmap/patrol_main_header_image" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/patrol_danger_list_recycler_item_tv_user"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="上报人：张三丰" />
+
+            <TextView
+                android:id="@+id/patrol_danger_list_recycler_item_tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="2018-07-25 14:51:12" />
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

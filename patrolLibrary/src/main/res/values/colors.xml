@@ -4,9 +4,13 @@
 
     <color name="patrol_color_success">#34C156</color>
     <color name="patrol_color_error">#ff0000</color>
+    <color name="patrol_color_gray">#cccccc</color>
+    <color name="patrol_color_orange">#FFF2AF06</color>
 
     <color name="patrol_content_normal_bg">#C6EAC6</color>
     <color name="patrol_content_normal_text">#09bb07</color>
     <color name="patrol_content_danger_bg">#F3D2D1</color>
     <color name="patrol_content_danger_text">#e64340</color>
+
+
 </resources>

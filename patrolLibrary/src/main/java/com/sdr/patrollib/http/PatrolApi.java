@@ -66,4 +66,8 @@ public interface PatrolApi {
     // 工程历史记录详情
     @GET("app/app_patrol_mobile_check_records/{id}")
     Observable<BaseData<PatrolHistoryInfoProject>> getHistoryProjectInfo(@Path("id") String id);
+
+    // 隐患列表
+    @GET("app/maintenance_defect_info/page")
+    Observable<ResponseBody> getDangerList(@Query("pageNum") int pageNo, @Query("pageSize") int pageSize, @Query("processStep") String processStep);
 }

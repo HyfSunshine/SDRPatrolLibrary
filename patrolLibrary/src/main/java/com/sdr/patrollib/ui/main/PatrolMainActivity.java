@@ -30,6 +30,7 @@ import com.sdr.patrollib.support.PatrolNumNotifyDialog;
 import com.sdr.patrollib.support.PatrolUnFinishDialog;
 import com.sdr.patrollib.support.data.AttachmentLocal;
 import com.sdr.patrollib.support.data.PatrolTaskLocal;
+import com.sdr.patrollib.ui.danger_handle.PatrolDangerListActivity;
 import com.sdr.patrollib.ui.history.PatrolHistoryActivity;
 import com.sdr.patrollib.ui.target_device.PatrolTargetDeviceActivity;
 import com.sdr.patrollib.ui.target_project.PatrolTargetProjectActivity;
@@ -165,7 +166,7 @@ public class PatrolMainActivity extends PatrolBaseActivity<PatrolMainPresenter> 
         viewOperateDangerList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getContext(), PatrolDangerListActivity.class));
             }
         });
         viewOperateDangerQuery.setOnClickListener(new View.OnClickListener() {
