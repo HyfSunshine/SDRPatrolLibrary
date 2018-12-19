@@ -54,7 +54,8 @@
         <activity android:name=".ui.history.PatrolHistoryActivity" />
         <activity android:name=".ui.history_info.PatrolHistoryInfoProjectActivity" />
         <activity android:name=".ui.history_info.PatrolHistoryInfoDeviceActivity" />
-        <activity android:name=".ui.danger_handle.PatrolDangerListActivity"></activity>
+        <activity android:name=".ui.danger_handle.PatrolDangerListActivity" />
+        <activity android:name=".ui.danger_handle.PatrolDangerSolveActivity"></activity>
     </application>
 
 </manifest>

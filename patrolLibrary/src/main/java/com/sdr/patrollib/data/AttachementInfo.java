@@ -1,6 +1,8 @@
 package com.sdr.patrollib.data;
 
-public class AttachementInfo {
+import java.io.Serializable;
+
+public class AttachementInfo implements Serializable {
     /**
      * id : 60
      * attachId : AC7A5A474A314EAC9E8E690F776765FB

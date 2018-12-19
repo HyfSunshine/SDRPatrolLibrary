@@ -37,6 +37,7 @@ public abstract class PatrolBaseSimpleFragment extends BaseFragment implements A
         return getLayoutInflater().inflate(R.layout.sdr_layout_public_empty_view, null);
     }
 
+    @Override
     public String getFragmentTitle() {
         return "";
     }

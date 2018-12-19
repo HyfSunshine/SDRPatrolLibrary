@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sdr.patrollib.R;
@@ -16,7 +17,9 @@ import com.sdr.patrollib.ui.danger_handle.adapter.PatrolDangerListRecyclerAdapte
 import java.util.List;
 
 public class PatrolDangerListActivity extends PatrolBaseActivity<PatrolDangerListPresenter> implements PatrolDangerListContract.View,
-        SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
+        SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemClickListener {
+    private static final int REQUEST_CODE_OPEN_SOLVE_ACTIVITY = 2;
+
 
     private SwipeRefreshLayout swipe;
     private RecyclerView recyclerView;
@@ -52,6 +55,7 @@ public class PatrolDangerListActivity extends PatrolBaseActivity<PatrolDangerLis
         swipe.setColorSchemeResources(R.color.colorPrimary);
         swipe.setOnRefreshListener(this);
         patrolDangerListRecyclerAdapter.setOnLoadMoreListener(this, recyclerView);
+        patrolDangerListRecyclerAdapter.setOnItemClickListener(this);
 
     }
 
@@ -60,6 +64,11 @@ public class PatrolDangerListActivity extends PatrolBaseActivity<PatrolDangerLis
         return new PatrolDangerListPresenter();
     }
 
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        PatrolDanger item = patrolDangerListRecyclerAdapter.getItem(position);
+        PatrolDangerSolveActivity.start(getActivity(), REQUEST_CODE_OPEN_SOLVE_ACTIVITY, item);
+    }
 
     @Override
     public void onRefresh() {

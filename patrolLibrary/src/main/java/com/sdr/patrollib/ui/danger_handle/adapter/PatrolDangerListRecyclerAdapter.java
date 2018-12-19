@@ -15,6 +15,7 @@ import com.sdr.patrollib.data.AttachementInfo;
 import com.sdr.patrollib.data.danger.Maintenance_DefectProcessingStepEnum;
 import com.sdr.patrollib.data.danger.PatrolDanger;
 import com.sdr.patrollib.support.PatrolConstant;
+import com.sdr.patrollib.util.PatrolUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -53,14 +54,19 @@ public class PatrolDangerListRecyclerAdapter extends BaseQuickAdapter<PatrolDang
         List<AttachementInfo> list = item.getList();
         imageView.setVisibility(list.isEmpty() ? View.GONE : View.VISIBLE);
         if (!list.isEmpty()) {
-            Glide.with(mContext)
-                    .setDefaultRequestOptions(
-                            new RequestOptions()
-                                    .frame(10)
-                                    .centerCrop()
-                    )
-                    .load(PatrolLibrary.getInstance().getUrl() + item.getList().get(0).getAttchPath())
-                    .into(imageView);
+            AttachementInfo attachment = item.getList().get(0);
+            // 确保是jpg 、MP4文件
+            if ("jpg".equals(PatrolUtil.getFileType(attachment.getAttchPath())) || "mp4".equals(attachment.getAttchPath())) {
+                final String fileUrl = PatrolLibrary.getInstance().getUrl() + attachment.getAttchPath();
+                Glide.with(mContext)
+                        .setDefaultRequestOptions(
+                                new RequestOptions()
+                                        .frame(10)
+                                        .centerCrop()
+                        )
+                        .load(fileUrl)
+                        .into(imageView);
+            }
         }
 
         tvUser.setText("上报人：" + item.getReportEmployeeName() + "");
