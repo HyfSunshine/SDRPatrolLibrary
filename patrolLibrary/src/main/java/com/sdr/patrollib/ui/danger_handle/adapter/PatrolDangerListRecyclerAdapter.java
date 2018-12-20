@@ -5,20 +5,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.sdr.patrollib.PatrolLibrary;
 import com.sdr.patrollib.R;
-import com.sdr.patrollib.data.AttachementInfo;
 import com.sdr.patrollib.data.danger.Maintenance_DefectProcessingStepEnum;
 import com.sdr.patrollib.data.danger.PatrolDanger;
 import com.sdr.patrollib.support.PatrolConstant;
-import com.sdr.patrollib.util.PatrolUtil;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by HyFun on 2018/12/17.
@@ -36,9 +30,9 @@ public class PatrolDangerListRecyclerAdapter extends BaseQuickAdapter<PatrolDang
     protected void convert(BaseViewHolder helper, PatrolDanger item) {
         TextView tvType = helper.getView(R.id.patrol_danger_list_recycler_item_tv_type);
         TextView tvStatus = helper.getView(R.id.patrol_danger_list_recycler_item_tv_status);
+        ImageView ivAttach = helper.getView(R.id.patrol_danger_list_recycler_item_iv_attach);
         TextView tvTitle = helper.getView(R.id.patrol_danger_list_recycler_item_tv_title);
         TextView tvContent = helper.getView(R.id.patrol_danger_list_recycler_item_tv_content);
-        ImageView imageView = helper.getView(R.id.patrol_danger_list_recycler_item_iv_danger);
         TextView tvUser = helper.getView(R.id.patrol_danger_list_recycler_item_tv_user);
         TextView tvTime = helper.getView(R.id.patrol_danger_list_recycler_item_tv_time);
 
@@ -51,23 +45,7 @@ public class PatrolDangerListRecyclerAdapter extends BaseQuickAdapter<PatrolDang
         tvContent.setVisibility(TextUtils.isEmpty(content) ? View.GONE : View.VISIBLE);
         tvContent.setText(content + "");
 
-        List<AttachementInfo> list = item.getList();
-        imageView.setVisibility(list.isEmpty() ? View.GONE : View.VISIBLE);
-        if (!list.isEmpty()) {
-            AttachementInfo attachment = item.getList().get(0);
-            // 确保是jpg 、MP4文件
-            if ("jpg".equals(PatrolUtil.getFileType(attachment.getAttchPath())) || "mp4".equals(attachment.getAttchPath())) {
-                final String fileUrl = PatrolLibrary.getInstance().getUrl() + attachment.getAttchPath();
-                Glide.with(mContext)
-                        .setDefaultRequestOptions(
-                                new RequestOptions()
-                                        .frame(10)
-                                        .centerCrop()
-                        )
-                        .load(fileUrl)
-                        .into(imageView);
-            }
-        }
+        ivAttach.setVisibility(item.getList().isEmpty() ? View.GONE : View.VISIBLE);
 
         tvUser.setText("上报人：" + item.getReportEmployeeName() + "");
         tvTime.setText(PatrolConstant.DATE_TIME_FORMAT.format(new Date(item.getReportTime())));

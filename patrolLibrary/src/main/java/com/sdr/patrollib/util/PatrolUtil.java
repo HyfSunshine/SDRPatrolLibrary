@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -253,4 +254,19 @@ public class PatrolUtil {
         return options;
     }
 
+
+
+    /**
+     * 启动浏览器打开某个网页
+     *
+     * @param context
+     * @param url
+     */
+    public static void openUrlByBrowser(Context context, String url) {
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        Uri content_url = Uri.parse(url);
+        intent.setData(content_url);
+        context.startActivity(intent);
+    }
 }

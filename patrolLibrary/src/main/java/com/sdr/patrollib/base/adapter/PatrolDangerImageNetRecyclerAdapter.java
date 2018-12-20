@@ -1,6 +1,5 @@
 package com.sdr.patrollib.base.adapter;
 
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,9 +15,7 @@ import com.sdr.lib.util.CommonUtil;
 import com.sdr.patrollib.PatrolLibrary;
 import com.sdr.patrollib.R;
 import com.sdr.patrollib.data.AttachementInfo;
-
-import java.io.File;
-import java.util.List;
+import com.sdr.patrollib.util.PatrolUtil;
 
 /**
  * Created by HyFun on 2018/12/14.
@@ -42,25 +39,40 @@ public class PatrolDangerImageNetRecyclerAdapter extends BaseQuickAdapter<Attach
         TextView tvFileSize = helper.getView(R.id.patrol_add_danger_image_recycler_item_tv_file_size);
 
         final String fileUrl = PatrolLibrary.getInstance().getUrl() + item.getAttchPath();
-        Glide.with(mContext)
-                .setDefaultRequestOptions(
-                        new RequestOptions()
-                                .frame(10)
-                                .centerCrop()
-                )
-                .load(fileUrl)
-                .into(imageView);
+        String fileType = PatrolUtil.getFileType(fileUrl);
+
+
+        if (fileType.equals("jpg") || fileType.equals("mp4")) {
+            // 说明是图片  、  视频
+            Glide.with(mContext)
+                    .setDefaultRequestOptions(
+                            new RequestOptions()
+                                    .frame(10)
+                                    .centerCrop()
+                    )
+                    .load(fileUrl)
+                    .into(imageView);
+        } else {
+            // 不是图片、视频  是附件
+            Glide.with(mContext)
+                    .load(R.mipmap.patrol_ic_file)
+                    .into(imageView);
+        }
+
         ivDelete.setVisibility(View.GONE);
-        ivPlayVideo.setVisibility(new File(item.getAttchPath()).getName().contains(".mp4") ? View.VISIBLE : View.GONE);
         tvFileSize.setVisibility(View.GONE);
+        ivPlayVideo.setVisibility(fileType.equals("mp4") ? View.VISIBLE : View.GONE);
 
         helper.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ("jpg".equals(getFileType(fileUrl))) {
+                if (fileType.equals("jpg")) {
                     CommonUtil.viewImage(mContext, false, fileUrl);
-                } else if ("mp4".equals(getFileType(fileUrl))) {
+                } else if (fileType.equals("mp4")) {
                     TakePhotoVideoHelper.startPlayVideo(mContext, fileUrl);
+                } else {
+                    // 浏览器打开
+                    PatrolUtil.openUrlByBrowser(mContext, fileUrl);
                 }
             }
         });
@@ -68,21 +80,9 @@ public class PatrolDangerImageNetRecyclerAdapter extends BaseQuickAdapter<Attach
     }
 
 
-    private String getFileType(String url) {
-        String type = "";
-        File file = new File(url);
-        if (file.getName().contains(".jpg") || file.getName().contains(".png") || file.getName().contains(".jpeg")) {
-            type = "jpg";
-        } else if (file.getName().contains(".mp4")) {
-            type = "mp4";
-        }
-        return type;
-    }
-
-
-
     /**
-     *  设置adapter
+     * 设置adapter
+     *
      * @param recyclerView
      * @return
      */

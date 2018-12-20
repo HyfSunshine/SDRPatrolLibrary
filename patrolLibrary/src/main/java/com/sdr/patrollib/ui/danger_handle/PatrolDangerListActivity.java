@@ -7,9 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.orhanobut.logger.Logger;
+import com.sdr.patrollib.PatrolLibrary;
 import com.sdr.patrollib.R;
 import com.sdr.patrollib.base.activity.PatrolBaseActivity;
 import com.sdr.patrollib.contract.PatrolDangerListContract;
+import com.sdr.patrollib.data.AttachementInfo;
 import com.sdr.patrollib.data.danger.PatrolDanger;
 import com.sdr.patrollib.presenter.PatrolDangerListPresenter;
 import com.sdr.patrollib.ui.danger_handle.adapter.PatrolDangerListRecyclerAdapter;

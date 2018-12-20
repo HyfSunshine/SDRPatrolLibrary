@@ -1,6 +1,8 @@
 package com.sdr.patrollib.http;
 
 import com.sdr.patrollib.data.BaseData;
+import com.sdr.patrollib.data.danger.Maintenance_DefectTrackingInfo;
+import com.sdr.patrollib.data.danger.PatrolDangerHandleType;
 import com.sdr.patrollib.data.device.PatrolDevice;
 import com.sdr.patrollib.data.device_history.PatrolHistoryDevice;
 import com.sdr.patrollib.data.device_history.PatrolHistoryInfoDevice;
@@ -70,4 +72,12 @@ public interface PatrolApi {
     // 隐患列表
     @GET("app/maintenance_defect_info/page")
     Observable<ResponseBody> getDangerList(@Query("pageNum") int pageNo, @Query("pageSize") int pageSize, @Query("processStep") String processStep);
+
+    // 隐患解决流程
+    @GET("app/maintenance_defect_tracking_info/{id}")
+    Observable<BaseData<List<Maintenance_DefectTrackingInfo>>> getDangerFlowList(@Path("id") String id);
+
+    // 隐患检查处理类型获取
+    @GET("enum/Maintenance_DefectProcessingMethodEnum")
+    Observable<BaseData<List<PatrolDangerHandleType>>> getDangerCheckHandleTypes();
 }

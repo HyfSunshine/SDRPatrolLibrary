@@ -46,14 +46,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:textSize="16sp"
-                        android:text="不正常，护林员不正常，护林员不正常，护林员不正常，护林员不正常，护林员不正常，护林员不正常，护林员不正常，护林员不正常，护林员不正常，护林员" />
+                        android:text="不正常，护林员不正常，护林员不正常，护林员不正常，护林员不正常，护林员不正常，护林员不正常，护林员不正常，护林员不正常，护林员不正常，护林员"
+                        android:textSize="16sp" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/patrol_danger_solve_rv_image_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginTop="5dp"
+                        android:overScrollMode="never" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -75,12 +76,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#ffffff"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:orientation="vertical">
 
                     <android.support.v7.widget.RecyclerView
+                        android:id="@+id/patrol_danger_solve_rv_flow"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        android:padding="10dp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -88,9 +91,10 @@
     </ScrollView>
 
     <Button
+        android:id="@+id/patrol_danger_solve_btn_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|center"
         android:layout_margin="16dp"
         android:text="立即处理" />
 </FrameLayout>

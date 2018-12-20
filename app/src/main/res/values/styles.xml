@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
 
 
+        <item name="colorControlNormal">@color/colorPrimaryDisable</item>
         <item name="buttonStyle">@style/ButtonStyle</item>
         <!--配置全局的Material Dialog-->
         <item name="md_title_color">#333333</item>
