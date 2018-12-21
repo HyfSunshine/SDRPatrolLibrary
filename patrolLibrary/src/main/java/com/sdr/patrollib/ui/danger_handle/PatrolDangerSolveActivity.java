@@ -19,12 +19,14 @@ import com.sdr.patrollib.data.danger.Maintenance_DefectTrackingInfo;
 import com.sdr.patrollib.data.danger.PatrolDanger;
 import com.sdr.patrollib.presenter.PatrolDangerSolvePresenter;
 import com.sdr.patrollib.ui.danger_handle.adapter.PatrolDangerSolveFlowRecyclerAdapter;
+import com.sdr.patrollib.ui.danger_handle.handle.PatrolDangerCheckAuditActivity;
 import com.sdr.patrollib.ui.danger_handle.handle.PatrolDangerCheckHandleActivity;
 
 import java.util.List;
 
 public class PatrolDangerSolveActivity extends PatrolBaseActivity<PatrolDangerSolvePresenter> implements PatrolDangerSolveContract.View {
     private static final String PATROL_DANGER = "PATROL_DANGER";
+    public static final String TRACK_INFO = "TRACK_INFO";
 
     private static final int REQUEST_CODE_OPEN_HANDLE_ACTIVITY = 100;
 
@@ -101,11 +103,22 @@ public class PatrolDangerSolveActivity extends PatrolBaseActivity<PatrolDangerSo
                 if (patrolDanger.getProcessStep().equals(Maintenance_DefectProcessingStepEnum.检查处理.toString())) {
                     PatrolDangerCheckHandleActivity.start(getActivity(), REQUEST_CODE_OPEN_HANDLE_ACTIVITY, patrolDanger);
                 } else if (patrolDanger.getProcessStep().equals(Maintenance_DefectProcessingStepEnum.检查审核.toString())) {
-
+                    PatrolDangerCheckAuditActivity.start(getActivity(), REQUEST_CODE_OPEN_HANDLE_ACTIVITY, patrolDanger);
                 }
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_OPEN_HANDLE_ACTIVITY && resultCode == RESULT_OK) {
+            Maintenance_DefectTrackingInfo trackingInfo = (Maintenance_DefectTrackingInfo) data.getSerializableExtra(TRACK_INFO);
+            // 更新
+            showLoadingDialog("正在更新...");
+            presenter.handleDanger(trackingInfo);
+        }
+    }
+
 
     // —————————————————————PRIVATE—————————————————————
 
@@ -132,7 +145,14 @@ public class PatrolDangerSolveActivity extends PatrolBaseActivity<PatrolDangerSo
     }
 
     @Override
+    public void handlerDangerSuccess() {
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    @Override
     public void loadDataComplete() {
         showContentView();
+        hideLoadingDialog();
     }
 }

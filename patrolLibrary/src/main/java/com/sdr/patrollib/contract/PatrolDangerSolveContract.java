@@ -16,10 +16,14 @@ public interface PatrolDangerSolveContract {
     interface View extends AbstractView {
         void loadDangerFlowListSuccess(List<Maintenance_DefectTrackingInfo> flowList);
 
+        void handlerDangerSuccess();
+
         void loadDataComplete();
     }
 
     interface Presenter extends AbstractPresenter<View> {
         void getDangerFlowList(String id);
+
+        void handleDanger(Maintenance_DefectTrackingInfo trackingInfo);
     }
 }

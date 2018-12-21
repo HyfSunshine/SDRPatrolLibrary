@@ -80,4 +80,8 @@ public interface PatrolApi {
     // 隐患检查处理类型获取
     @GET("enum/Maintenance_DefectProcessingMethodEnum")
     Observable<BaseData<List<PatrolDangerHandleType>>> getDangerCheckHandleTypes();
+
+    // 解决隐患上传记录
+    @POST("app/maintenance_defect_tracking_info")
+    Observable<ResponseBody> updateTrackInfo(@Body RequestBody requestBody);
 }
